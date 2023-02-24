@@ -1,3 +1,5 @@
+const NotFoundError = require('../utils/NotFoundError');
+
 module.exports = (req, res, next) => {
-  next(new Error('Страница не найдена'));
+  next(new NotFoundError('Страница не найдена'));
 };

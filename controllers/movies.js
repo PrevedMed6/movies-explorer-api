@@ -1,4 +1,8 @@
 const Movie = require('../models/movie');
+const NotFoundError = require('../utils/NotFoundError');
+const BadRequestError = require('../utils/BadRequestError');
+const NoPrivilegiesError = require('../utils/NoPrivilegiesError');
+const constants = require('../utils/constants');
 
 module.exports.createMovie = (req, res, next) => {
   const {
@@ -29,6 +33,9 @@ module.exports.createMovie = (req, res, next) => {
   })
     .then((movie) => res.send({ data: movie }))
     .catch((err) => {
+      if (err.name === constants.VALIDATION_ERROR_NAME) {
+        next(new BadRequestError(constants.VALIDATION_ERROR_TEXT));
+      }
       next(err);
     });
 };
@@ -43,18 +50,23 @@ module.exports.deleteMovie = (req, res, next) => {
   Movie.findOne({
     _id: req.params._id,
   })
-    .then(() => {
+    .then((movie) => {
+      if (!movie) {
+        throw new NotFoundError(constants.NOT_FOUND_ERROR_TEXT);
+      }
       Movie.findOneAndDelete({
         _id: req.params._id,
         owner: req.user._id,
       })
         .then((delMovie) => {
-          if (!delMovie) throw new Error();
+          if (!delMovie) throw new NoPrivilegiesError();
           res.send({ data: delMovie });
         })
         .catch(next);
     })
     .catch((err) => {
-      next(err);
+      if (err.name === constants.CAST_ERROR_NAME) {
+        next(new BadRequestError(constants.CAST_ERROR_TEXT));
+      }
     });
 };

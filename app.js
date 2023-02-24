@@ -3,10 +3,11 @@ const express = require('express');
 require('dotenv').config();
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-const { celebrate, Joi } = require('celebrate');
+const { celebrate, Joi, errors } = require('celebrate');
 const { login, createUser, logout } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const pageNotFound = require('./middlewares/pageNotFound');
+const customErrors = require('./middlewares/errors');
 const users = require('./routes/users');
 const movies = require('./routes/movies');
 
@@ -46,6 +47,8 @@ app.post('/signout', logout);
 app.use('/', users);
 app.use('/', movies);
 app.use(pageNotFound);
+app.use(errors());
+app.use(customErrors);
 mongoose.connect(DB_SERVER_URL);
 
 app.listen(PORT, () => {
