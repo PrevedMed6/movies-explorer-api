@@ -1,10 +1,10 @@
 const constants = require('./constants');
 
-module.exports = class ValidationError extends Error {
+module.exports = class BadRequestError extends Error {
   constructor(message) {
     super();
-    this.name = 'ValidationError';
-    this.message = message ?? 'Переданы некорректные данные';
+    this.name = constants.VALIDATION_ERROR_NAME;
+    this.message = message ?? constants.VALIDATION_ERROR_TEXT;
     this.code = constants.BAD_REQUEST_ERROR;
   }
 };

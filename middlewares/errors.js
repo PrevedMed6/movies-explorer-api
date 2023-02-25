@@ -1,3 +1,5 @@
+const constants = require('../utils/constants');
+
 module.exports = (err, req, res, next) => {
   const { code = 500, message } = err;
 
@@ -5,7 +7,7 @@ module.exports = (err, req, res, next) => {
     .status(code)
     .send({
       message: code === 500
-        ? 'На сервере произошла ошибка'
+        ? constants.UNEXPECTED_ERROR_TEXT
         : message,
     });
   next();

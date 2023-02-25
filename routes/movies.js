@@ -5,6 +5,7 @@ const {
   getMovies,
   deleteMovie,
 } = require('../controllers/movies');
+const constants = require('../utils/constants');
 
 movies.delete(
   '/movies/:_id',
@@ -24,21 +25,11 @@ movies.post(
       director: Joi.string().required(),
       year: Joi.string().required().length(4),
       description: Joi.string().required(),
-      image: Joi.string()
-        .required()
-        .regex(
-          /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([a-zA-Z0-9/\-._~:?#[\]@!$&'()*+,;=]*)#?$/,
-        ),
+      image: Joi.string().required().regex(constants.URL_VALIDATION_REGEX),
       trailerLink: Joi.string()
         .required()
-        .regex(
-          /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([a-zA-Z0-9/\-._~:?#[\]@!$&'()*+,;=]*)#?$/,
-        ),
-      thumbnail: Joi.string()
-        .required()
-        .regex(
-          /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([a-zA-Z0-9/\-._~:?#[\]@!$&'()*+,;=]*)#?$/,
-        ),
+        .regex(constants.URL_VALIDATION_REGEX),
+      thumbnail: Joi.string().required().regex(constants.URL_VALIDATION_REGEX),
       owner: Joi.string().alphanum().length(24),
       owmovieId: Joi.string().alphanum().length(24),
       nameRU: Joi.string().required(),

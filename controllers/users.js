@@ -4,36 +4,36 @@ const User = require('../models/user');
 const constants = require('../utils/constants');
 const NotFoundError = require('../utils/NotFoundError');
 const BadRequestError = require('../utils/BadRequestError');
-const UserDuplicateError = require('../utils/UserDuplicateError');
+const DuplicateError = require('../utils/DuplicateError');
 const UnauthorizedError = require('../utils/UnauthorizedError');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
-function updateUser(userId, fields, options) {
+const updateUser = function updateUser(userId, fields, options) {
   return User.findByIdAndUpdate(userId, fields, options)
     .then((user) => {
       if (!user) {
         return Promise.reject(
-          new NotFoundError(constants.NOT_FOUND_ERROR_TEXT),
+          new NotFoundError(),
         );
       }
       return user;
     })
     .catch((err) => {
-      if (err.name === constants.VALIDATION_ERROR_NAME) {
+      if (
+        err.name === constants.VALIDATION_ERROR_NAME ||
+        err.name === constants.CAST_ERROR_NAME
+      ) {
         return Promise.reject(
           new BadRequestError(constants.VALIDATION_ERROR_TEXT),
         );
       }
-      if (err.name === constants.CAST_ERROR_NAME) {
-        return Promise.reject(new BadRequestError(constants.CAST_ERROR_TEXT));
-      }
       if (err.code === 11000) {
-        return Promise.reject(new UserDuplicateError());
+        return Promise.reject(new DuplicateError(constants.USER_DUPLICATE_ERROR_TEXT));
       }
       return Promise.reject(err);
     });
-}
+};
 
 module.exports.createUser = (req, res, next) => {
   const { name, email, password } = req.body;
@@ -54,10 +54,10 @@ module.exports.createUser = (req, res, next) => {
       })
       .catch((err) => {
         if (err.code === 11000) {
-          next(new UserDuplicateError());
+          next(new DuplicateError(constants.USER_DUPLICATE_ERROR_TEXT));
         }
         if (err.name === constants.VALIDATION_ERROR_NAME) {
-          next(new BadRequestError(constants.VALIDATION_ERROR_TEXT));
+          next(new BadRequestError());
         }
         next(err);
       }),
@@ -73,27 +73,27 @@ module.exports.login = (req, res, next) => {
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
       );
       res
-        .cookie('jwt', token, {
+        .cookie(constants.COOKIE_NAME, token, {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
           sameSite: 'none',
           secure: true,
         })
         .send({
-          message: 'Авторизация успешна',
+          message: constants.LOGIN_SUCCEEDED,
         })
         .end();
     })
     .catch(() => {
-      next(new UnauthorizedError());
+      next(new UnauthorizedError(constants.LOGIN_FAILED_ERROR_TEXT));
     });
 };
 
 module.exports.logout = (req, res) => {
   res
-    .clearCookie('jwt')
+    .clearCookie(constants.COOKIE_NAME)
     .send({
-      message: 'Вы вышли',
+      message: constants.LOGOUT_SUCCEEDED,
     })
     .end();
 };
@@ -101,7 +101,7 @@ module.exports.logout = (req, res) => {
 module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
-      if (!user) throw new NotFoundError(constants.NOT_FOUND_ERROR_TEXT);
+      if (!user) throw new NotFoundError();
       res.send({ data: user });
     })
     .catch(next);

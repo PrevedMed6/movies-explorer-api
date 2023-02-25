@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const constants = require('../utils/constants');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -22,11 +23,9 @@ const movieSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator(image) {
-        return /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([a-zA-Z0-9/\-._~:?#[\]@!$&'()*+,;=]*)#?$/.test(
-          image,
-        );
+        return constants.URL_VALIDATION_REGEX.test(image);
       },
-      message: 'Некорректная ссылка.',
+      message: constants.INVALID_URL,
     },
     required: true,
   },
@@ -34,11 +33,9 @@ const movieSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator(trailerLink) {
-        return /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([a-zA-Z0-9/\-._~:?#[\]@!$&'()*+,;=]*)#?$/.test(
-          trailerLink,
-        );
+        return constants.URL_VALIDATION_REGEX.test(trailerLink);
       },
-      message: 'Некорректная ссылка.',
+      message: constants.INVALID_URL,
     },
     required: true,
   },
@@ -46,11 +43,9 @@ const movieSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator(thumbnail) {
-        return /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([a-zA-Z0-9/\-._~:?#[\]@!$&'()*+,;=]*)#?$/.test(
-          thumbnail,
-        );
+        return constants.URL_VALIDATION_REGEX.test(thumbnail);
       },
-      message: 'Некорректная ссылка.',
+      message: constants.INVALID_URL,
     },
     required: true,
   },

@@ -12,6 +12,7 @@ const cors = require('./middlewares/cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const users = require('./routes/users');
 const movies = require('./routes/movies');
+const constants = require('./utils/constants');
 
 const { PORT = 3000 } = process.env;
 const { DB_SERVER_URL = 'mongodb://localhost:27017/anyfilmsdb' } = process.env;
@@ -27,7 +28,7 @@ app.post(
     body: Joi.object().keys({
       email: Joi.string()
         .required()
-        .email({ minDomainSegments: 2, tlds: { allow: ['ru', 'com', 'net'] } }),
+        .email(constants.EMAIL_VALIDATION_EXPRESSION),
       password: Joi.string().required().min(8),
     }),
   }),
@@ -39,7 +40,7 @@ app.post(
     body: Joi.object().keys({
       email: Joi.string()
         .required()
-        .email({ minDomainSegments: 2, tlds: { allow: ['ru', 'com', 'net'] } }),
+        .email(constants.EMAIL_VALIDATION_EXPRESSION),
       password: Joi.string().required().min(8),
       name: Joi.string().min(2).max(30),
     }),
