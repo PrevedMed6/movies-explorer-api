@@ -28,6 +28,9 @@ function updateUser(userId, fields, options) {
       if (err.name === constants.CAST_ERROR_NAME) {
         return Promise.reject(new BadRequestError(constants.CAST_ERROR_TEXT));
       }
+      if (err.code === 11000) {
+        return Promise.reject(new UserDuplicateError());
+      }
       return Promise.reject(err);
     });
 }
@@ -105,12 +108,12 @@ module.exports.getCurrentUser = (req, res, next) => {
 };
 
 module.exports.updateUser = (req, res, next) => {
-  const { name, about } = req.body;
+  const { name, email } = req.body;
   updateUser(
     req.user._id,
     {
       name,
-      about,
+      email,
     },
     {
       new: true,
