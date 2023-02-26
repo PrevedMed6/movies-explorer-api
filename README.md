@@ -7,4 +7,4 @@ Backend дипломного проекта Яндекс Практикум. С�
 - MongoDB
 
 Адрес репозитория: https://github.com/PrevedMed6/movies-explorer-api\
-Адрес в облаке:
+Адрес в облаке: https://api.bigbelka.movies.nomoredomains.work
