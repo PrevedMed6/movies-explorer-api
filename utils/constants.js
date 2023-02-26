@@ -37,7 +37,10 @@ const INVALID_URL = 'Некорректная ссылка';
 // #region validation expressions
 const URL_VALIDATION_REGEX =
   /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([a-zA-Z0-9/\-._~:?#[\]@!$&'()*+,;=]*)#?$/;
-const EMAIL_VALIDATION_EXPRESSION = { minDomainSegments: 2, tlds: { allow: ['ru', 'com', 'net'] } };
+const EMAIL_VALIDATION_EXPRESSION = {
+  minDomainSegments: 2,
+  tlds: { allow: ['ru', 'com', 'net'] },
+};
 // #endregion
 
 // #region success messages
@@ -46,6 +49,8 @@ const LOGOUT_SUCCEEDED = 'Вы вышли';
 // #endregion
 
 const COOKIE_NAME = 'jwt';
+const PERIOD_FOR_IP = 1000 * 60 * 15;
+const MAX_TRY_COUNT = 100;
 
 module.exports = {
   DEFAULT_ERROR,
@@ -76,5 +81,7 @@ module.exports = {
   EMAIL_VALIDATION_EXPRESSION,
   LOGIN_SUCCEEDED,
   LOGOUT_SUCCEEDED,
-  COOKIE_NAME
+  COOKIE_NAME,
+  PERIOD_FOR_IP,
+  MAX_TRY_COUNT
 };
