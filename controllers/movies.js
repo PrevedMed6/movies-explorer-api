@@ -27,12 +27,13 @@ module.exports.createMovie = (req, res, next) => {
   const {
     country,
     director,
+    duration,
     year,
     description,
     image,
     trailerLink,
     thumbnail,
-    owmovieId,
+    movieId,
     nameRU,
     nameEN,
   } = req.body;
@@ -40,13 +41,14 @@ module.exports.createMovie = (req, res, next) => {
   Movie.create({
     country,
     director,
+    duration,
     year,
     description,
     image,
     trailerLink,
     thumbnail,
     owner,
-    owmovieId,
+    movieId,
     nameRU,
     nameEN,
   })

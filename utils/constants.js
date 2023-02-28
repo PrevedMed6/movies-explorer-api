@@ -29,20 +29,6 @@ const USER_DUPLICATE_ERROR_TEXT = 'Пользователь с таким email 
 const MOVIE_DUPLICATE_ERROR_TEXT = 'Фильм с таким ID уже существует';
 // #endregion
 
-// #region validation error messages
-const INVALID_EMAIL = 'Некорректный почтовый адрес';
-const INVALID_URL = 'Некорректная ссылка';
-// #endregion
-
-// #region validation expressions
-const URL_VALIDATION_REGEX =
-  /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([a-zA-Z0-9/\-._~:?#[\]@!$&'()*+,;=]*)#?$/;
-const EMAIL_VALIDATION_EXPRESSION = {
-  minDomainSegments: 2,
-  tlds: { allow: ['ru', 'com', 'net'] },
-};
-// #endregion
-
 // #region success messages
 const LOGIN_SUCCEEDED = 'Авторизация успешна';
 const LOGOUT_SUCCEEDED = 'Вы вышли';
@@ -75,10 +61,6 @@ module.exports = {
   DUPLICATE_ERROR_TEXT,
   USER_DUPLICATE_ERROR_TEXT,
   MOVIE_DUPLICATE_ERROR_TEXT,
-  INVALID_EMAIL,
-  URL_VALIDATION_REGEX,
-  INVALID_URL,
-  EMAIL_VALIDATION_EXPRESSION,
   LOGIN_SUCCEEDED,
   LOGOUT_SUCCEEDED,
   COOKIE_NAME,

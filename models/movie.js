@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const constants = require('../utils/constants');
+const validationConstants = require('../utils/validationConstants');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -10,10 +10,13 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  duration: {
+    type: Number,
+    required: true,
+  },
   year: {
     type: String,
     required: true,
-    length: 4,
   },
   description: {
     type: String,
@@ -23,9 +26,9 @@ const movieSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator(image) {
-        return constants.URL_VALIDATION_REGEX.test(image);
+        return validationConstants.URL_VALIDATION_REGEX.test(image);
       },
-      message: constants.INVALID_URL,
+      message: validationConstants.INVALID_URL,
     },
     required: true,
   },
@@ -33,9 +36,9 @@ const movieSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator(trailerLink) {
-        return constants.URL_VALIDATION_REGEX.test(trailerLink);
+        return validationConstants.URL_VALIDATION_REGEX.test(trailerLink);
       },
-      message: constants.INVALID_URL,
+      message: validationConstants.INVALID_URL,
     },
     required: true,
   },
@@ -43,9 +46,9 @@ const movieSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator(thumbnail) {
-        return constants.URL_VALIDATION_REGEX.test(thumbnail);
+        return validationConstants.URL_VALIDATION_REGEX.test(thumbnail);
       },
-      message: constants.INVALID_URL,
+      message: validationConstants.INVALID_URL,
     },
     required: true,
   },
@@ -54,10 +57,9 @@ const movieSchema = new mongoose.Schema({
     ref: 'user',
     required: true,
   },
-  owmovieId: {
-    type: mongoose.Schema.Types.ObjectId,
+  movieId: {
+    type: Number,
     required: true,
-    unique: true,
   },
   nameRU: {
     type: String,

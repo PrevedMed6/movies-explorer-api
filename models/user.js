@@ -3,6 +3,7 @@ const validator = require('validator');
 const bcrypt = require('bcrypt');
 const UnauthorizedError = require('../utils/UnauthorizedError');
 const constants = require('../utils/constants');
+const validationConstants = require('../utils/validationConstants');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -13,7 +14,7 @@ const userSchema = new mongoose.Schema({
       validator(mail) {
         return validator.isEmail(mail);
       },
-      message: constants.INVALID_EMAIL,
+      message: validationConstants.INVALID_EMAIL,
     },
   },
   name: {

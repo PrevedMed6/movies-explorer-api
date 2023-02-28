@@ -5,7 +5,6 @@ const constants = require('../utils/constants');
 const NotFoundError = require('../utils/NotFoundError');
 const BadRequestError = require('../utils/BadRequestError');
 const DuplicateError = require('../utils/DuplicateError');
-const UnauthorizedError = require('../utils/UnauthorizedError');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -84,9 +83,7 @@ module.exports.login = (req, res, next) => {
         })
         .end();
     })
-    .catch(() => {
-      next(new UnauthorizedError(constants.LOGIN_FAILED_ERROR_TEXT));
-    });
+    .catch(next);
 };
 
 module.exports.logout = (req, res) => {
