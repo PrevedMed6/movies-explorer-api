@@ -17,7 +17,7 @@ const SIGNUP_VALIDATION = celebrate({
     email: Joi.string()
       .required()
       .email(EMAIL_VALIDATION_EXPRESSION),
-    password: Joi.string().required().min(8),
+    password: Joi.string().required(),
     name: Joi.string().min(2).max(30),
   }),
 });
