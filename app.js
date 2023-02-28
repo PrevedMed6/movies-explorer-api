@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const express = require('express');
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -11,7 +10,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const index = require('./routes/index');
 const { rateLimits } = require('./utils/rateLimiterConfig');
 
-const { PORT = 3000, DB_SERVER_URL = 'mongodb://localhost:27017/anyfilmsdb' } =
+const { PORT = 3000, DB_SERVER_URL = 'mongodb://localhost:27017/bitfilmsdb' } =
   process.env;
 
 const app = express();
@@ -26,6 +25,4 @@ app.use(errors());
 app.use(customErrors);
 mongoose.connect(DB_SERVER_URL);
 
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
-});
+app.listen(PORT);
