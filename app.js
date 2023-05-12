@@ -9,11 +9,13 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const index = require('./routes/index');
 const { rateLimits } = require('./utils/rateLimiterConfig');
 const config = require('./utils/config');
+const cors = require('./middlewares/cors');
 
 const { PORT = config.DEFAULT_PORT, DB_SERVER_URL = config.DEFAULT_MONGO } =
   process.env;
 
 const app = express();
+app.use(cors);
 app.use(cookieParser());
 app.use(express.json());
 app.use(requestLogger);
