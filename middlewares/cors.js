@@ -6,8 +6,8 @@ module.exports = (req, res, next) => {
   const requestHeaders = req.headers['access-control-request-headers'];
   const allowedCors = [
     'http://localhost:3000',
-    'http://bigbelka.movies.nomoredomains.monster/',
-    'https://bigbelka.movies.nomoredomains.monster/'
+    'http://bigbelka.movies.nomoredomains.monster',
+    'https://bigbelka.movies.nomoredomains.monster'
   ];
 
   if (allowedCors.includes(origin)) {
