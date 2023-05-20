@@ -38,34 +38,43 @@ module.exports.createMovie = (req, res, next) => {
     nameEN,
   } = req.body;
   const owner = req.user._id;
-  Movie.create({
-    country,
-    director,
-    duration,
-    year,
-    description,
-    image,
-    trailerLink,
-    thumbnail,
-    owner,
+  return Movie.findOne({
     movieId,
-    nameRU,
-    nameEN,
-  })
-    .then((movie) => res.send({ data: movie }))
-    .catch((err) => {
-      if (err.name === constants.VALIDATION_ERROR_NAME) {
-        next(new BadRequestError());
-      }
-      if (err.code === 11000) {
-        next(new DuplicateError(constants.MOVIE_DUPLICATE_ERROR_TEXT));
-      }
-      next(err);
-    });
+    owner: req.user._id,
+  }).then((result) => {
+    if (result) {
+      next(new DuplicateError(constants.MOVIE_DUPLICATE_ERROR_TEXT));
+    } else {
+      Movie.create({
+        country,
+        director,
+        duration,
+        year,
+        description,
+        image,
+        trailerLink,
+        thumbnail,
+        owner,
+        movieId,
+        nameRU,
+        nameEN,
+      })
+        .then((movie) => res.send({ data: movie }))
+        .catch((err) => {
+          if (err.name === constants.VALIDATION_ERROR_NAME) {
+            next(new BadRequestError());
+          }
+          if (err.code === 11000) {
+            next(new DuplicateError(constants.MOVIE_DUPLICATE_ERROR_TEXT));
+          }
+          next(err);
+        });
+    }
+  });
 };
 
 module.exports.getMovies = (req, res, next) => {
-  Movie.find({ owner: req.user._id})
+  Movie.find({ owner: req.user._id })
     .then((movies) => res.send({ data: movies }))
     .catch(next);
 };
